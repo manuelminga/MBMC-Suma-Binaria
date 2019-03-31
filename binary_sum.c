@@ -4,51 +4,51 @@
 #include <omp.h>
 #include <time.h>
 
-int *resultado;
 
-int * sumar_acarreo(int *res, int *acarreo){
-  resultado = (int *)malloc((5)*sizeof(int));
+int *  sumar_acarreo(int *res, int *acarreo, int longit){
+  //guarda resultado de la suma entre el resultado anterior y el acarreo
+  int * resultado = (int *)malloc((longit)*sizeof(int));
   int aux = 0;
-  for(int i = 0; i < 5; i++){
+  for(int i = 0; i < longit; i++){
     if(acarreo[i] == 1)
       aux = 1;
   }
 
-  //int nuevoRes[5];
-  int nuevoAca[5];
-
-  for(int i = 0; i < 5; i++){
-    resultado[i] = 0;
-    nuevoAca[i] = 0;
-  }
-
+  //aún tenemos que sumar el acarreo
   if (aux == 1){
-    for(int i = 0; i < 5; i++){
-      if ((res[i] == 1) && (acarreo[i] == 1)){
-	resultado[i] = 0;
-	nuevoAca[i-1] = 1;
+    int nuevoAca[longit];
+
+    for(int i = 0; i < longit; i++){
+      resultado[i] = 0;
+      nuevoAca[i] = 0;
+    }
+
+    //suma paralela del resultado anterior con el acarreo
+    int idHilo;
+    omp_set_num_threads(longit);
+    #pragma omp parallel shared(idHilo)
+    {
+    idHilo = omp_get_thread_num();
+      if ((res[idHilo] == 1) && (acarreo[idHilo] == 1)){
+	resultado[idHilo] = 0;
+	nuevoAca[idHilo-1] = 1;
       }
       else{
-	resultado[i] = res[i] + acarreo[i];
+	resultado[idHilo] = res[idHilo] + acarreo[idHilo];
       }
+    }
       
-    }
-    printf("Arreglo resultante: \n");
-    for(int i = 0; i < 5; i++){
-      printf("%d", resultado[i]);
-    }
-    printf("\n");
-    sumar_acarreo(resultado, nuevoAca);
+    sumar_acarreo(resultado, nuevoAca, longit);
   }
   else{
-    
-    //return nuevoRes
-    printf("ya llegaste\n");
-  
-    return resultado;}
+    //ya no hay acarreo, ya terminamos
+    return res;
+  }
   
 }
 
+
+//saca la potencia, dada una base y un exponente
 int pot( int base, int exp)
 {
   if(exp == 0)
@@ -71,22 +71,26 @@ int main(int argc, char **argv){
   sscanf(argv[1], "%i", &potencia);
   int poten = pot(2,potencia);
 
-  printf("El valor de poten: %i\n", poten);
-
-  int An[] = {1,1,1,1};
-  int Bn[] = {0,1,0,0};
+  //primera entrada
+  int An[poten];
+  //segunda entrada
+  int Bn[poten];
   //Resultados
   int Cn[poten + 1];
   //Auxiliar
   int Dn[poten +1];
 
+  //Rellenamos aleatoriamente los arreglos de entrada
+  for (int i=0 ;i < poten; i++)
+  {
+    An[i] = rand() % (2);
+    Bn[i] = rand() % (2);
+  }
+
+  //Inicializamos los arreglos de resultados y de acarreo
   for (int i=0 ;i <=poten; i++)
   {
     Cn[i] = 0;
-  }
-
-  for (int i=0 ;i <=poten; i++)
-  {
     Dn[i] = 0;
   }
 
@@ -104,44 +108,30 @@ int main(int argc, char **argv){
   }
   printf("\n");
 
+  //Calculamos la suma sin acarreo de las entradas, y calculamos el acarreo inicial
   int idHilo;
   omp_set_num_threads(poten);
 #pragma omp parallel shared(idHilo)
   {
     idHilo = omp_get_thread_num();
-    //printf("Hilo: %d\n", idHilo);
     if((An[idHilo] == 1)&&(Bn[idHilo]==1)){
       Cn[idHilo+1]=0;
-      //if(idHilo != 0)
-	Dn[idHilo]=1;
-      //printf("Entro en: %i\n", idHilo);
+      Dn[idHilo]=1;
     }else{
       Cn[idHilo+1] = An[idHilo] + Bn[idHilo];
     }
   }
 
-  printf("Resultados: \n");
-  for (int i=0 ;i <=poten; i++)
-  {
-    printf("%i",Cn[i]);
-  }
-  printf("\n");
+  //Resultados finales
+  int *resultado;
+resultado = sumar_acarreo(Cn, Dn, poten+1);
 
-  printf("Auxiliar: \n");
-  for (int i=0 ;i <= poten; i++)
-  {
-    printf("%i",Dn[i]);
-  }
-  printf("\n");
-
-  sumar_acarreo(Cn, Dn);
-
-
-  printf("Arreglo resultante: \n");
-  for(int i = 0; i <= poten; i++){
-    printf("%d", resultado[i]);
-  }
-  printf("\n");
+ printf("Resultado: \n");
+ for(int i = 0; i <= poten; i++){
+   printf("%d", resultado[i]);
+ }
+ printf("\n");
+  
 
   
   return 0;
