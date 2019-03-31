@@ -82,25 +82,8 @@ int main(int argc, char **argv)
     Dn[i] = 0;
   }
 
-
-//void suma_acarreo(){
-  int idHilo;
-  omp_set_num_threads(poten);
-  #pragma omp parallel shared(idHilo)
-  {
-    idHilo = omp_get_thread_num();
-
-    if((An[idHilo] == 1)&&(Bn[idHilo]==1)){
-      Cn[idHilo]=0;
-      Dn[idHilo]=1;
-      printf("Entro en: %i\n", idHilo);
-    }else{
-      Cn[idHilo] = An[idHilo] + Bn[idHilo];
-    }
-  }
-
   printf("El arreglo A: \n");
-  for (int i=0 ;i <poten; i++)
+  for (int i=0 ;i < poten; i++)
   {
     printf("%i",An[i]);
   }
@@ -122,11 +105,30 @@ int main(int argc, char **argv)
   printf("\n");
 
 
-  printf("Resultado antes de agregar acarreo: \n");
+
+
+
+//void suma_acarreo(){
+  /*int idHilo;
+  omp_set_num_t  hreads(poten);
+  #pragma omp parallel shared(idHilo)
+  {
+    idHilo = omp_get_thread_num();
+
+    if((An[idHilo] == 1)&&(Bn[idHilo]==1)){
+      Cn[idHilo]=0;
+      Dn[idHilo]=1;
+      printf("Entro en: %i\n", idHilo);
+    }else{
+    Cn[idHilo] = An[idHilo] + Bn[idHilo];
+    }
+    }*/
+
+    /*printf("Resultado antes de agregar acarreo: \n");
   for (int i=0 ;i < poten; i++)
   {
     printf("%i",Cn[i]);
-  }
+  }*/
 	/* revisar esta idea les explico por aqui por que no se quien vera primero esto y lo intentara
 	* pense en este caso con la idea que teniamos en el lab que es si la suma es A[1111] + B[1001] = 11000
 	*Pero con nuestra idea daria 10010
@@ -194,10 +196,10 @@ void suma_acarreo(){
   }
 }
 
-suma_acarreo();
+//suma_acarreo();
 
 
-printf("\n -------------------\n");
+/*printf("\n -------------------\n");
 printf("Arreglo Resultado: \n");
 for (int i=0 ;i < poten; i++)
 {
@@ -213,7 +215,7 @@ for (int i=0 ;i <poten+1; i++)
 {  
   printf("%i",Dn[i]);
 }
-printf("\n");
+printf("\n");*/
 	
 
   return 0;
