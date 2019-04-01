@@ -8,7 +8,6 @@
 int *  sumar_acarreo(int *res, int *acarreo, int longit){
   //guarda resultado de la suma entre el resultado anterior y el acarreo
   int * resultado = (int *)malloc((longit)*sizeof(int));
-  resultado[longit]=0;
   int aux = 0;
   for(int i = 0; i < longit; i++){
     if(acarreo[i] == 1)
@@ -45,7 +44,6 @@ int *  sumar_acarreo(int *res, int *acarreo, int longit){
     //ya no hay acarreo, ya terminamos
     return res;
   }
-
 }
 
 
@@ -126,15 +124,15 @@ int main(int argc, char **argv){
 
   //Resultados finales
   int *resultado;
-  resultado;
-resultado = sumar_acarreo(Cn, Dn, poten+1);
-
- printf("Resultado: \n");
- for(int i = 0; i <= poten; i++){
+  resultado = sumar_acarreo(Cn, Dn, poten+1);
+  printf("Resultado: \n");
+  for(int i = 0; i <= poten; i++){
    printf("%d", resultado[i]);
- }
- printf("\n");
- free(resultado);
- return EXIT_SUCCESS;
- //return 0;
+  }
+  printf("\n");
+  //Liberación de memoria; Se añade el caso en el que no se utiliza acarreo.
+  if (*resultado != '\0') {
+    free(resultado);
+  }
+  return EXIT_SUCCESS;
 }
