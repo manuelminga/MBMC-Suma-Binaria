@@ -8,6 +8,7 @@
 int *  sumar_acarreo(int *res, int *acarreo, int longit){
   //guarda resultado de la suma entre el resultado anterior y el acarreo
   int * resultado = (int *)malloc((longit)*sizeof(int));
+  resultado[longit]=0;
   int aux = 0;
   for(int i = 0; i < longit; i++){
     if(acarreo[i] == 1)
@@ -37,14 +38,14 @@ int *  sumar_acarreo(int *res, int *acarreo, int longit){
 	resultado[idHilo] = res[idHilo] + acarreo[idHilo];
       }
     }
-      
+
     sumar_acarreo(resultado, nuevoAca, longit);
   }
   else{
     //ya no hay acarreo, ya terminamos
     return res;
   }
-  
+
 }
 
 
@@ -81,6 +82,7 @@ int main(int argc, char **argv){
   int Dn[poten +1];
 
   //Rellenamos aleatoriamente los arreglos de entrada
+  srand(time(NULL));
   for (int i=0 ;i < poten; i++)
   {
     An[i] = rand() % (2);
@@ -124,6 +126,7 @@ int main(int argc, char **argv){
 
   //Resultados finales
   int *resultado;
+  resultado;
 resultado = sumar_acarreo(Cn, Dn, poten+1);
 
  printf("Resultado: \n");
@@ -131,8 +134,7 @@ resultado = sumar_acarreo(Cn, Dn, poten+1);
    printf("%d", resultado[i]);
  }
  printf("\n");
-  
-
-  
-  return 0;
+ free(resultado);
+ return EXIT_SUCCESS;
+ //return 0;
 }
