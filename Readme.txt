@@ -9,3 +9,9 @@ Es necesario sustituir el número 5 en los for y declaraciones de arreglos por p
 
 Actualización 23:36:
 Creo que ya está. Revisar.
+
+
+Actualización 31/Marzo/2019 10:32 pm:
+
+Seguimos sin saber por que en mi computadora las sumas salen mal, tengo gcc 5.4.0, Ubuntu 16.04.6 LTS.
+Ya se intento Liberando memoria y sin liberar. 
