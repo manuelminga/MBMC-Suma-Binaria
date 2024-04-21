@@ -62,7 +62,7 @@ int pot( int base, int exp)
 int main(int argc, char **argv){
   int potencia;
   printf("Suma binaria de la clonacion de Git Hut");
-  print("Mi primer comit de Segundo Ciclo");
+  print("Mi primer commit de Segundo Ciclo A");
   if (argc < 2)
     {
       printf("por favor especifique el numero\n");
