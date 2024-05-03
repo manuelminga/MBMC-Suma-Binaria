@@ -63,6 +63,8 @@ int main(int argc, char **argv){
   int potencia;
   printf("Suma binaria de la clonacion de Git Hut");
   print("Mi primer commit de Segundo Ciclo A");
+  //Programacion Orientada a Objetos
+  
   if (argc < 2)
     {
       printf("por favor especifique el numero\n");
